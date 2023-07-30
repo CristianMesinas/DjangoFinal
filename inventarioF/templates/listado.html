@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}
+  Lista
+{% endblock title %}
+
+{% block content %}
+  <table class="table table-bordered table-hover">
+    <thead class="table-primary">
+        <th>nombre</th>
+        <th>precio</th>
+        <th>stock</th>      
+          <!--un modelo OneToMany ,en el cual puede haber muchas categorías,
+                            pero un producto, solo puede tener una categoría-->
+          <!--es un selector de Nacional o Importado-->
+        <th>Acciones</th>
+    </thead>
+    <tbody>
+        {% for producto in productos %}
+            <tr>
+                <td>{{producto.nombre}}</td>
+                <td>{{producto.precio}}</td>
+                <td>{{producto.stock}}</td>
+                <td><button type="button" class="btn btn-outline-info">Editar</button>
+                    <button type="button" class="btn btn-outline-danger">Eliminar</button></td>
+            </tr>
+            
+        {% endfor %}
+        
+    </tbody>
+  </table>
+  <!--se crea un boton con modal para agregar nuevos productos-->
+  <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#crearProducto">Crear</button>
+  <div class="modal fade" id="crearProducto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Ingresar Producto</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form class="form-control" action="{% url 'crear'%}" method="post"><!--method="post" se indica que es de guardado de datos-->
+            <!--{% url 'crear'%} con esto le indicamos que tome la funcion de name ='crear', es decir, crearProducto-->
+            {% csrf_token %} <!--! es fundamental para validar el envio del formulario!!! -->
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">Nombre</label>
+              <input type="text" class="form-control" name="nombre" id="nombre" required placeholder="Ingrese Nombre">
+              <!--el ID "nombre" es utilizado en views.py para identificar el dato que ingresamos POST"-->
+            </div> <!--required le indica al usuario a que ingrese un dato para enviar al servidor-->
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">Precio</label>
+              <input type="number" class="form-control" name="precio" id="precio" required placeholder="Ingrese Precio">
+                <!--el ID "precio" es utilizado en views.py para identificar el dato que ingresamos POST"-->
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">Stock</label>
+              <input type="number" class="form-control" name="stock" id="stock" required placeholder="Ingrese Cantidad">
+              <!--el ID "stock" es utilizado en views.py para identificar el dato que ingresamos POST"-->
+            </div>
+            <div class="modal-footer">
+              <button type="reset" class="btn btn-outline-danger">Cancelar</button>
+              <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+<!--con el post se envia datos al servidor-->
+<!--con get se piden datos al servidor-->
