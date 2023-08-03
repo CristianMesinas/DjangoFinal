@@ -1,14 +1,16 @@
 {% extends "base.html" %}
+{% load static %} <!--lo ideal es colocarlo en todas las hojas para que la carga sea mas rapida-->
 {% block title %}
   Lista
 {% endblock title %}
 
 {% block content %}
-  <table class="table table-bordered table-hover">
-    <thead class="table-primary">
+  <table style="background-color: rgba(6, 255, 81, 0.219);">
+    <thead>
         <th>nombre</th>
         <th>precio</th>
-        <th>stock</th>      
+        <th>stock</th>    
+        <th>categoría</th>  
           <!--un modelo OneToMany ,en el cual puede haber muchas categorías,
                             pero un producto, solo puede tener una categoría-->
           <!--es un selector de Nacional o Importado-->
@@ -20,8 +22,11 @@
                 <td>{{producto.nombre}}</td>
                 <td>{{producto.precio}}</td>
                 <td>{{producto.stock}}</td>
-                <td><button type="button" class="btn btn-outline-info">Editar</button>
-                    <button type="button" class="btn btn-outline-danger">Eliminar</button></td>
+                <td>{{producto.categoria}}</td>
+                <td>
+                    <a href="{% url 'editar' producto.id %}"><button type="button" class="btn btn-outline-dark">Editar</button></a>
+                    <a href="{% url 'eliminar' producto.id %}"><button type="button" class="btn btn-outline-danger">Eliminar</button></a>
+                  </td> <!--con el href le indicamos a que url, referenciada con el name, corresponden de urls.py-->
             </tr>
             
         {% endfor %}
@@ -55,6 +60,15 @@
               <label for="exampleFormControlInput1" class="form-label">Stock</label>
               <input type="number" class="form-control" name="stock" id="stock" required placeholder="Ingrese Cantidad">
               <!--el ID "stock" es utilizado en views.py para identificar el dato que ingresamos POST"-->
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">Categoria</label>
+              <select class="form-select" name="categoria" id="categoria" required>
+                <option value="" selected>Elige una categoria</option>
+                {% for categoria in categorias %}
+                  <option value="{{categoria.id}}">{{categoria.nombre}}</option>
+                {% endfor %}
+              </select>
             </div>
             <div class="modal-footer">
               <button type="reset" class="btn btn-outline-danger">Cancelar</button>
