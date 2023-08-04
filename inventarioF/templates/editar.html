@@ -23,6 +23,15 @@
       <label class="form-label">Stock</label>
       <input type="number" class="form-control" name="stock" id="stock" value="{{producto.stock}}" required placeholder="Ingrese Cantidad">
     </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Categoria</label>
+      <select class="form-select" name="categoria" id="categoria" required>
+        <option value="{{producto.categoria.id}}" selected>{{producto.categoria.nombre}}</option>
+        {% for categoria in categorias %}
+          <option value="{{categoria.id}}">{{categoria.nombre}}</option>
+        {% endfor %}
+      </select>
+    </div>
     <div class="modal-footer">
       <a href="{% url 'base' %}" class="btn btn-outline-danger">Cancelar</a>
       <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">Aceptar</button>

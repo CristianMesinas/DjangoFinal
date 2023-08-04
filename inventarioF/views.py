@@ -24,18 +24,23 @@ def editarProducto(request, id): #los id son para referenciar que producto edita
 #se puede poner tambien id_producto o prod_id o de la forma que queramos
 #el id tambien hay que indicarlo en urls.py, y tiene que estar escrito exactamente igual
     producto = Productos.objects.get(id=id) #busca el producto que va a actualizar
+    categorias = Categorias.objects.all()
+    categoria = Categorias.objects.get(id=producto.categoria.id)
     
     if request.method == 'GET': #metodo get es lo que ocurre cuando le damos click a editar al producto
-        context = {'producto': producto}
+        context = {'producto': producto, 'categorias':categorias}
         return render (request, 'editar.html', context)
     
     elif request.method == 'POST': #metodo post es lo que ocurre cuando le damos aceptar despues de editar el producto
         nuevo_nombre = request.POST ["nombre"] #obtiene los nuevos datos del producto
         nuevo_precio = request.POST ["precio"]
-        nuevo_stock = request.POST ["stock"] 
+        nuevo_stock = request.POST ["stock"]
+        categoria1 = request.POST ["categoria"]
+        catego = Categorias.objects.get(id= categoria1)
         producto.nombre = nuevo_nombre #los reemplaza por los datos anteriores del producto
         producto.precio = nuevo_precio
         producto.stock = nuevo_stock
+        producto.categoria = catego
         producto.save() #el .save se utiliza para guardar los nuevos datos del producto en mi base de datos
         return redirect ("/")
 
