@@ -6,24 +6,37 @@
 {% block content %}
 
 <h1>Editar {{producto.nombre}}</h1> <!--las llaves dobles son para llamar un objeto de python-->
-<form class="form-control" action="{% url 'editar' producto.id %}" method="post">
+<div >
+<form class="form-control" style="background-color: rgba(6, 255, 81, 0.219);" action="{% url 'editar' producto.id %}" method="post">
     
     {% csrf_token %} <!--! es fundamental para validar el envio del formulario!!! -->
                       <!--las llaves simples con % son para llamar funciones de python-->
-    <div class="mb-3">
+    <!-- <div class="mb-3">
       <label class="form-label">Nombre</label>
       <input type="text" class="form-control" name="nombre" id="nombre" value="{{producto.nombre}}" required placeholder="Ingrese Nombre">
     </div>  
     <div class="mb-3">
       <label class="form-label">Precio</label>
       <input type="number" class="form-control" name="precio" id="precio" value="{{producto.precio}}" required placeholder="Ingrese Precio">
-        <!--el value, es para que aparezcan los datos del producto que tenia asignado previamente-->
+        <!-el value, es para que aparezcan los datos del producto que tenia asignado previamente->
     </div>
     <div class="mb-3">
       <label class="form-label">Stock</label>
       <input type="number" class="form-control" name="stock" id="stock" value="{{producto.stock}}" required placeholder="Ingrese Cantidad">
     </div>
-    <div class="modal-footer">
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Categoria</label>
+      <select class="form-select" name="categoria" id="categoria" required>
+        <option value="{{producto.categoria.id}}" selected>{{producto.categoria.nombre}}</option>
+        {% for categoria in categorias %}
+          <option value="{{categoria.id}}">{{categoria.nombre}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="modal-footer"> -->
+      
+        {{formulario.as_p}} <!--se pone formulario porq en la view lo ponemos como un contexto formulario-->
+      
       <a href="{% url 'base' %}" class="btn btn-outline-danger">Cancelar</a>
       <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">Aceptar</button>
     </div>
