@@ -57,7 +57,7 @@
         </div>
         <div class="modal-body">
           
-           <form class="form-control" action="{% url 'crear'%}" method="post"> <!--method="post" se indica que es de guardado de datos-->
+           <form class="form-control"  style="background-color: rgba(6, 255, 81, 0.219);"action="{% url 'crear'%}" method="post"> <!--method="post" se indica que es de guardado de datos-->
                                                                               <!--{% url 'crear'%} con esto le indicamos que tome la funcion de name ='crear', es decir, crearProducto-->
             {% csrf_token %} <!-- es fundamental para validar el envio del formulario!!! ->
             <div class="mb-3">

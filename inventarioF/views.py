@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect #hay que importar los distintos metodos a utilizar, de lo contrario no los reconoce
+from django.shortcuts import render, redirect, get_object_or_404 #hay que importar los distintos metodos a utilizar, de lo contrario no los reconoce
 from django.http import HttpResponse
 from .models import Productos, Categorias
 from .forms import ProductoForm #para saber si esta bien creado, nos posicionamos sobre el elemento y apretando ctrl y clik deberia llevarnos a la pagina
@@ -31,11 +31,19 @@ def crearProducto(request): # creamos el identificador para poder cargar nuevos 
         formulario.save()
         return redirect('/')
 
+def eliminarProducto(request, id): 
+    producto = Productos.objects.get(id=id)
+    producto.delete()
+    return redirect('/')
+    #return HttpResponse(f"se elimino el producto {producto.nombre}") 
+    #el httpResponse es para mostrar mensajes en pantalla
+    #return redirect es para cuando finaliza el proceso, te redireccione a la pagina especificada
+
 @login_required   
 def editarProducto(request, id): #los id son para referenciar que producto editar/eliminar
 #se puede poner tambien id_producto o prod_id o de la forma que queramos
 #el id tambien hay que indicarlo en urls.py, y tiene que estar escrito exactamente igual
-    producto = Productos.objects.get(id=id) #busca el producto que va a actualizar
+    """producto = Productos.objects.get(id=id) #busca el producto que va a actualizar
     categorias = Categorias.objects.all()
     categoria = Categorias.objects.get(id=producto.categoria.id)
     
@@ -50,19 +58,23 @@ def editarProducto(request, id): #los id son para referenciar que producto edita
         categoria1 = request.POST ["categoria"]
         catego = Categorias.objects.get(id= categoria1)
         nuevo_origen = request.POST ["origen"]
-        origin = Productos.objects.get(id = nuevo_origen)
         producto.nombre = nuevo_nombre #los reemplaza por los datos anteriores del producto
         producto.precio = nuevo_precio
         producto.stock = nuevo_stock
         producto.categoria = catego
-        producto.origen = origin
+        producto.origen = nuevo_origen
         producto.save() #el .save se utiliza para guardar los nuevos datos del producto en mi base de datos
-        return redirect ("/")
+        return redirect ("/")"""
 
-def eliminarProducto(request, id): 
-    producto = Productos.objects.get(id=id)
-    producto.delete()
-    return redirect('/')
-    #return HttpResponse(f"se elimino el producto {producto.nombre}") 
-    #el httpResponse es para mostrar mensajes en pantalla
-    #return redirect es para cuando finaliza el proceso, te redireccione a la pagina especificada
+    producto = get_object_or_404(Productos, id=id)
+    if request.method== 'GET':
+        
+        formulario = ProductoForm(instance=producto)
+        context = {'formulario': formulario, 'producto': producto}
+        return render (request, 'editar.html', context)
+    
+    elif request.method == 'POST':
+        formulario = ProductoForm(request.POST, instance=producto)
+        if formulario.is_valid():
+            formulario.save()
+        return redirect('/')
