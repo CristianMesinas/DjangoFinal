@@ -43,23 +43,24 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <form class="form-control" action="{% url 'crear'%}" method="post"><!--method="post" se indica que es de guardado de datos-->
-            <!--{% url 'crear'%} con esto le indicamos que tome la funcion de name ='crear', es decir, crearProducto-->
-            {% csrf_token %} <!--! es fundamental para validar el envio del formulario!!! -->
+          
+          <!-- <form class="form-control" action="{% url 'crear'%}" method="post"> <method="post" se indica que es de guardado de datos-->
+                                                                              <!--{% url 'crear'%} con esto le indicamos que tome la funcion de name ='crear', es decir, crearProducto->
+            {% csrf_token %} <!-! es fundamental para validar el envio del formulario!!! ->
             <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label">Nombre</label>
               <input type="text" class="form-control" name="nombre" id="nombre" required placeholder="Ingrese Nombre">
-              <!--el ID "nombre" es utilizado en views.py para identificar el dato que ingresamos POST"-->
-            </div> <!--required le indica al usuario a que ingrese un dato para enviar al servidor-->
+              <!-el ID "nombre" es utilizado en views.py para identificar el dato que ingresamos POST"-->
+            </div> <!--required le indica al usuario a que ingrese un dato para enviar al servidor->
             <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label">Precio</label>
               <input type="number" class="form-control" name="precio" id="precio" required placeholder="Ingrese Precio">
-                <!--el ID "precio" es utilizado en views.py para identificar el dato que ingresamos POST"-->
+                <!-el ID "precio" es utilizado en views.py para identificar el dato que ingresamos POST"->
             </div>
             <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label">Stock</label>
               <input type="number" class="form-control" name="stock" id="stock" required placeholder="Ingrese Cantidad">
-              <!--el ID "stock" es utilizado en views.py para identificar el dato que ingresamos POST"-->
+              <!-el ID "stock" es utilizado en views.py para identificar el dato que ingresamos POST"->
             </div>
             <div class="mb-3">
               <label for="exampleFormControlInput1" class="form-label">Categoria</label>
@@ -69,11 +70,17 @@
                   <option value="{{categoria.id}}">{{categoria.nombre}}</option>
                 {% endfor %}
               </select>
-            </div>
+            </div> -->
+            
+            <!--{{formulario.as_table}} visualiza el formulario como una tabla-->
+            <!--{{formulario.as_ul}} visualiza el formulario como una lista-->
+            {{formulario.as_p}} <!--esto nos permite visualizar el formulario y con el .as_p nos ordena como si cada elemento fuera un parrafo-->
+            <!--de esta forma se evita hacer todo el codigo anterior, mas lo agregado en views.py-->
+
             <div class="modal-footer">
               <button type="reset" class="btn btn-outline-danger">Cancelar</button>
               <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">Aceptar</button>
-            </div>
+            </div> 
           </form>
         </div>
         
