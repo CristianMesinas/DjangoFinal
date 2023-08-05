@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import Productos, Categorias
 from .forms import ProductoForm #para saber si esta bien creado, nos posicionamos sobre el elemento y apretando ctrl y clik deberia llevarnos a la pagina
                                 #en este caso el .forms nos envia a forms.py con el ctrl click
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def listado(request):
@@ -12,6 +13,7 @@ def listado(request):
     context = {"productos": productos, "categorias":categoria, "formulario": formulario} # con el context le decimos a django como representar mis productos y categorias en HTML
     return render(request, 'listado.html', context)
 
+@login_required
 def crearProducto(request): # creamos el identificador para poder cargar nuevos datos
 #    nombre1 = request.POST ["nombre"] # "nombre" es tomado del ID usado en el modal para identificar que dato vamos a cargar
 #    precio1 = request.POST ["precio"] # "precio" es tomado del ID usado en el modal para identificar que dato vamos a cargar
@@ -29,6 +31,7 @@ def crearProducto(request): # creamos el identificador para poder cargar nuevos 
         formulario.save()
         return redirect('/')
 
+@login_required   
 def editarProducto(request, id): #los id son para referenciar que producto editar/eliminar
 #se puede poner tambien id_producto o prod_id o de la forma que queramos
 #el id tambien hay que indicarlo en urls.py, y tiene que estar escrito exactamente igual
@@ -46,10 +49,13 @@ def editarProducto(request, id): #los id son para referenciar que producto edita
         nuevo_stock = request.POST ["stock"]
         categoria1 = request.POST ["categoria"]
         catego = Categorias.objects.get(id= categoria1)
+        nuevo_origen = request.POST ["origen"]
+        origin = Productos.objects.get(id = nuevo_origen)
         producto.nombre = nuevo_nombre #los reemplaza por los datos anteriores del producto
         producto.precio = nuevo_precio
         producto.stock = nuevo_stock
         producto.categoria = catego
+        producto.origen = origin
         producto.save() #el .save se utiliza para guardar los nuevos datos del producto en mi base de datos
         return redirect ("/")
 

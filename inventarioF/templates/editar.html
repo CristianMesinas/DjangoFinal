@@ -32,6 +32,15 @@
         {% endfor %}
       </select>
     </div>
+    <div class="mb-3">
+      <label for="exampleFormControlInput1" class="form-label">Origen</label>
+      <select class="form-select" name="origen" id="origen" required>
+        <option value="{{producto.origen}}" selected>{{producto.origen.nombre}}</option>
+        {% for origen in productos %}
+          <option value="{{origen}}">{{origen.nombre}}</option>
+        {% endfor %}
+      </select>
+    </div>
     <div class="modal-footer">
       <a href="{% url 'base' %}" class="btn btn-outline-danger">Cancelar</a>
       <button type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">Aceptar</button>
